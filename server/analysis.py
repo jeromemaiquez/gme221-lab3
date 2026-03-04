@@ -64,7 +64,25 @@ def explode_to_lines(geom):
         
 
 # Quick test of the sampling function on the first road geometry
-test_geom = roads.geometry.iloc[0]
-lines = explode_to_lines(test_geom)
-pts = densify_line(lines[0], SAMPLE_STEP)
-print("Sample points:", len(pts), "Line length:", lines[0].length)
+
+# test_geom = roads.geometry.iloc[0]
+# lines = explode_to_lines(test_geom)
+# pts = densify_line(lines[0], SAMPLE_STEP)
+# print("Sample points:", len(pts), "Line length:", lines[0].length)
+
+all_sample_points = []
+
+for geom in roads.geometry:
+    parts = explode_to_lines(geom)
+    for line in parts:
+        pts = densify_line(line, SAMPLE_STEP)
+        for pt in pts:
+            all_sample_points.append(pt)
+
+gdf_samples = gpd.GeoDataFrame(
+    geometry=all_sample_points,
+    crs=roads.crs
+)
+
+gdf_samples.to_file("output/road_sample_points.shp")
+print("Densified sample points exported.")
