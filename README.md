@@ -1,4 +1,4 @@
-# GmE 221 - Laboratory Exercise 1
+# GmE 221 - Laboratory Exercise 3
 
 ## Overview
 This laboratory exercise constructs true 3D `LineString` geometries whose coordinates include a Z value (derived from a DEM raster). PostGIS is used for geospatial data storage.
