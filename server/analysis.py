@@ -29,8 +29,9 @@ roads = roads.set_crs(epsg=3123, allow_override=True)
 # print("Roads Geom Type:", roads.geometry.type.unique())
 
 dem = rio.open("data/dem.tif")
+roads.crs = dem.crs
 
-# print("DEM CRS:", dem.crs)
+print("DEM CRS:", dem.crs)
 # print("DEM Resolution:", dem.res)
 # print("DEM Bounds:", dem.bounds)
 
