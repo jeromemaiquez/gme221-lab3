@@ -2,7 +2,8 @@ import geopandas as gpd
 from sqlalchemy import create_engine
 import rasterio as rio
 import numpy as np
-from shapely.geometry import LineString, MultiLineString
+from shapely.geometry import LineString
+import os
 
 # --------- DATA INGESTION ----------- #
 
@@ -133,3 +134,14 @@ print("3D geometries created:", len(valid_3d), "/", len(roads))
 # Verify Z exists (third coord)
 first = valid_3d.iloc[0]
 print("First 3D coord sample:", list(first.coords)[0])
+
+# ---------- LINESTRINGZ CONSTRUCTION ------- #
+
+os.makedirs("output", exist_ok=True)
+
+# Keep only ONE geometry column for export (drop original geometry)
+roads_3d_gdf = roads.dropna(subset=["geom_3d"]).copy()
+roads_3d_gdf = roads_3d_gdf.set_geometry("geom_3d").drop(columns=["geom"], errors="ignore").set_crs(epsg=3123)
+
+roads_3d_gdf.to_file("output/roads_3d.geojson", driver="GeoJSON")
+print("Saved: output/roads_3d.geojson")
