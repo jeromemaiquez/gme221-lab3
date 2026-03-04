@@ -27,3 +27,10 @@ This laboratory exercise constructs true 3D `LineString` geometries whose coordi
 1. The original LineString objects only had few vertices each, typically the endpoints plus points of bending or intersection with other LineString objects. This is too sparse to capture fine gradations in the elevation, preventing the roads to be modeled fully as 3D objects. As such, densification was necessary to allow a finer sampling of the elevation along the roads.
 2. CRS alignment is necessary before sampling to ensure that the road sample vertices and DEM lie on the same coordinate system. Since sampling relies on a co-location, the sample vertex and its corresponding raster pixel must be located in the same location in the same CRS.
 3. Since the geometries now have a proper Z dimension, their elevation can now be modeled as a dimension of its location (in addition to latitude and longitude). This allows true 3D representation and analysis. For example, the length of the road segments will now change to account for any elevation change.
+
+## Final Reflections
+1. Export to GeoJSON preserves the 3-dimensional coordinate structure of the LineString objects (each vertex is defined by an (x, y, z) tuple).
+2. GeoJSON lacks a specific `LineStringZ` geometry type to denote 3D LineString objects. Instead, the geometries are of type `LineString`.
+3. This is because GeoJSON simply lacks the `LineStringZ` geometry type in its specification (data standard), despite nonetheless being able to support a 3D coordinate structure (in content).
+4. Given the 3D coordinate structure, QGIS is able to handle and visualize the road features as true 3D geometry. This is in contrast to 2.5D visualizations, where a nonetheless 2D layer (viewed top-down) is given the illusion of height/depth using a height/elevation attribute.
+5. Other geospatial vector file/storage formats with more explicit 3D support include GeoPackage, CityGML, or storage in PostGIS. In these formats, 3D-specific geometry types are available (e.g., `LineStringZ`), which can undergo 3D operations.
